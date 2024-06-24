@@ -1,0 +1,18 @@
+/* components/NavBar.module.css */
+.navBar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 10px;
+  }
+  
+  .navItem {
+    color: white;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  
+  .navItem:hover {
+    text-decoration: underline;
+  }
+  
