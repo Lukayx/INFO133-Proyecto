@@ -1,0 +1,28 @@
+/* src/pages/stock.module.css */
+
+.pageContainer {
+    padding: 20px;
+  }
+  
+  .productosTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .productosTable th,
+  .productosTable td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .productosTable th {
+    background-color: #f0f0f0;
+  }
+  
+  .productosTable td button {
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  

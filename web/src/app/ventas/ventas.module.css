@@ -1,0 +1,42 @@
+/* src/pages/ventas.module.css */
+
+.pageContainer {
+  padding: 20px;
+}
+
+.datePickerContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.datePickerContainer .react-datepicker-wrapper {
+  flex: 1; /* Para que los datepickers ocupen todo el espacio disponible */
+  margin-right: 10px;
+}
+
+.sectionContainer {
+  margin-bottom: 20px;
+}
+
+.dateHeader {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.tableContainer {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tableContainer th,
+.tableContainer td {
+  padding: 8px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.tableContainer th {
+  background-color: #f0f0f0;
+}
