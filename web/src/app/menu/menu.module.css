@@ -1,115 +1,150 @@
 /* pages/Menu.module.css */
+
+/* Estilos generales */
 .body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa; /* Fondo blanquito */
-    color: #333;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .navBar {
-    display: flex;
-    justify-content: space-between;
-    background-color: #343a40; /* Un gris oscuro */
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .navItem {
-    color: white;
-    margin: 0 10px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .navItem:hover {
-    text-decoration: underline;
-  }
-  
-  .buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff; /* Azul bonito */
-    color: white;
-    transition: background-color 0.3s ease;
-  }
-  
-  .button:hover {
-    background-color: #0056b3; /* Azul más oscuro al hacer hover */
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .table th,
-  .table td {
-    border: 1px solid #ddd;
-    padding: 12px; /* Más espacio para un diseño más limpio */
-  }
-  
-  .table th {
-    background-color: #f2f2f2;
-    text-align: left;
-    font-weight: bold;
-  }
-  
-  .table tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Color de fondo alternativo para filas */
-  }
-  
-  .table tbody tr:hover {
-    background-color: #f1f1f1; /* Fondo al hacer hover sobre una fila */
-  }
-  
-  .form {
-    margin: 20px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form input {
-    margin-bottom: 10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .form button {
-    margin-top: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .form button:last-child {
-    background-color: #6c757d;
-  }
-  
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa; /* Fondo blanquito */
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Barra de navegación */
+.navBar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #343a40; /* Un gris oscuro */
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.navItem {
+  color: white;
+  margin: 0 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.navItem:hover {
+  text-decoration: underline;
+}
+
+/* Botones */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff; /* Azul bonito */
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3; /* Azul más oscuro al hacer hover */
+}
+
+/* Tabla */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 12px; /* Más espacio para un diseño más limpio */
+}
+
+.table th {
+  background-color: #f2f2f2;
+  text-align: left;
+  font-weight: bold;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Color de fondo alternativo para filas */
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1; /* Fondo al hacer hover sobre una fila */
+}
+
+/* Formulario */
+.form {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form input,
+.form select {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form label {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.form button {
+  margin-top: 10px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.form button:last-child {
+  background-color: #6c757d;
+}
+
+/* Selector de Fecha y Hora */
+.datePickerContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.nowButton {
+  margin-left: 10px;
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.nowButton:hover {
+  background-color: #0056b3;
+}
