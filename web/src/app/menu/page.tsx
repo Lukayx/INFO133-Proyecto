@@ -18,8 +18,6 @@ interface Cliente {
 const Menu: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [clientes, setClientes] = useState<Cliente[]>([
-    { rut: '123456789', hora: '12:56 del día 06-07', tipoCorte: 'Corte de Cabello', peluquero: 'Juan' },
-    { rut: '987654321', hora: '14:56 del día 06-07', tipoCorte: 'Corte y Peinado', peluquero: 'María' },
   ]);
   const [formData, setFormData] = useState({ rut: '', tipoCorte: '' });
   const [selectedStylist, setSelectedStylist] = useState<string>('');

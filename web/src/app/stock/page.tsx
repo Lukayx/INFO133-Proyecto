@@ -33,20 +33,6 @@ const StockPage: React.FC = () => {
     fetchProductos();
   }, [salonId]);
 
-  const handleAñadirExistencias = (id: number) => {
-    const nuevosProductos = productos.map(producto =>
-      producto.id === id ? { ...producto, cantidad_stock: producto.cantidad_stock + 1 } : producto
-    );
-    setProductos(nuevosProductos);
-  };
-
-  const handleQuitarExistencias = (id: number) => {
-    const nuevosProductos = productos.map(producto =>
-      producto.id === id ? { ...producto, cantidad_stock: producto.cantidad_stock - 1 } : producto
-    );
-    setProductos(nuevosProductos);
-  };
-
   return (
     <div>
       <NavBar />
@@ -60,7 +46,6 @@ const StockPage: React.FC = () => {
               <th>Nombre</th>
               <th>Cantidad en Stock</th>
               <th>Precio de Compra</th>
-              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -69,10 +54,6 @@ const StockPage: React.FC = () => {
                 <td>{producto.nombre}</td>
                 <td>{producto.cantidad_stock}</td>
                 <td>${producto.precio_compra}</td>
-                <td>
-                  <button onClick={() => handleAñadirExistencias(producto.id)}>+</button>
-                  <button onClick={() => handleQuitarExistencias(producto.id)}>-</button>
-                </td>
               </tr>
             ))}
           </tbody>

@@ -5,10 +5,10 @@ let conn: any
 if (!conn){
 conn = new Pool({
         user: 'postgres',
-        password: 'mord3lona',
+        password: 'password',
         host : 'localhost',
         port : 5432,
-        database: 'trabajo'
+        database: 'salonBelleza'
     }
     )
 }
