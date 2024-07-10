@@ -1,17 +1,38 @@
 // pages/register.tsx
 "use client";
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './register.module.css';
+
+interface Comuna {
+  id: number;
+  nombre: string;
+}
 
 export default function Register() {
   const [formData, setFormData] = useState({
     rut: '',
     name: '',
     salonName: '',
-    comuna: 'Seleccionar', // Valor inicial del select
+    comuna: '', // Valor inicial del select
   });
+  const [comunas, setComunas] = useState<Comuna[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    // Función para obtener las comunas desde la API
+    const fetchComunas = async () => {
+      try {
+        const response = await fetch('/api/comuna');
+        const data = await response.json();
+        setComunas(data.comunaData);
+      } catch (error) {
+        console.error('Error fetching comunas:', error);
+      }
+    };
+
+    fetchComunas();
+  }, []); // El array vacío asegura que esto se ejecute solo una vez al cargar la página
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -21,11 +42,37 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log('Form data submitted:', formData);
-    // Aquí puedes manejar el envío del formulario, por ejemplo, enviando los datos a tu servidor
-    router.push('/menu'); // Navegar a la página de menú después de registrarse
+
+    // Enviar los datos al servidor
+    try {
+      const response = await fetch('/api/new_pelu', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          rut_empresa: formData.rut,
+          nombre: formData.salonName,
+          id_comuna: parseInt(formData.comuna, 10), // Asegurarse de que sea un número
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al registrar la peluquería');
+      }
+
+      const data = await response.json();
+      console.log('Registro exitoso:', data);
+
+      // Navegar a la página de menú después de registrarse
+      router.push('/menu');
+    } catch (error) {
+      console.error('Error registrando la peluquería:', error);
+      // Puedes mostrar un mensaje de error al usuario si lo deseas
+    }
   };
 
   return (
@@ -75,12 +122,10 @@ export default function Register() {
             onChange={handleChange}
             required
           >
-            <option value="Seleccionar">Seleccionar</option>
-            <option value="pico">Santiago</option>
-            <option value="Provi">Providencia</option>
-            <option value="colina1">Las Condes</option>
-            <option value="Ñuñoa">Ñuñoa</option>
-            {/* Agrega más opciones según tus necesidades */}
+            <option value="">Seleccionar</option>
+            {comunas.map((comuna) => (
+              <option key={comuna.id} value={comuna.id.toString()}>{comuna.nombre}</option>
+            ))}
           </select>
 
           <button type="submit" className={styles.button}>

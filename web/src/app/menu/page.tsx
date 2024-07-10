@@ -17,8 +17,11 @@ const Menu: React.FC = () => {
   const [selectedStylist, setSelectedStylist] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const router = useRouter();
+  const indice = parseInt(process.env.NEXT_PUBLIC_INDICE || '0'); // Asegúrate de manejar el caso en que no haya ningún valor definido
+  console.log('Índice de esta wea es estoy en menu:', indice);
 
+  const router = useRouter();
+  
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));

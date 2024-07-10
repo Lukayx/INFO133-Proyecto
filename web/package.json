@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
     "next": "^14.2.4",
     "next-navigation": "^1.0.6",
+    "pg": "^8.12.0",
     "react": "^18",
     "react-datepicker": "^7.3.0",
     "react-dom": "^18",
@@ -20,6 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/pg": "^8.11.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-modal": "^3.16.3",
