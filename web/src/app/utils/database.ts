@@ -8,7 +8,7 @@ conn = new Pool({
         password: 'mord3lona',
         host : 'localhost',
         port : 5432,
-        database: 'peluq'
+        database: 'trabajo'
     }
     )
 }

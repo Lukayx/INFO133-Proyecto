@@ -1,4 +1,3 @@
-
 import { conn } from '../../utils/database';
 import { NextResponse } from 'next/server';
 
@@ -15,11 +14,15 @@ export async function GET(request: { url: string | URL; }) {
 
         // Realiza la consulta con el ID proporcionado
         const query = `
-            SELECT p.id, p.nombre, dp.precio_compra, dp.precio_venta, dp.cantidad_stock
-            FROM salon s
-            INNER JOIN detalle_producto dp ON dp.id_salon = s.id
-            INNER JOIN producto p ON p.id = dp.id_producto
-            WHERE s.id = $1;
+            SELECT c.fecha, s.id AS salon, ts.nombre AS servicio, cl.nombre AS cliente, h.hora_inicio, e.nombre AS empleado
+            FROM cita c
+            INNER JOIN salon s ON c.id_salon = s.id
+            INNER JOIN tipo_servicio ts ON c.id_servicio = ts.id
+            INNER JOIN cliente cl ON c.id_cliente = cl.id
+            INNER JOIN horario h ON c.id_horario = h.id
+            INNER JOIN empleados e ON c.id_empleado = e.id
+            WHERE s.id = $1
+            ORDER BY c.fecha, h.hora_inicio;
         `;
         const values = [id];
         const response = await conn.query(query, values);
@@ -27,10 +30,10 @@ export async function GET(request: { url: string | URL; }) {
         console.log(response.rows); // Solo para verificar en la consola
 
         return NextResponse.json({
-            peluqueriaData: response.rows
+            citasData: response.rows
         });
     } catch (error) {
-        console.error('Error fetching peluqueria data:', error);
-        return NextResponse.json({ error: 'Failed to fetch peluqueria data' }, { status: 500 });
+        console.error('Error fetching citas data:', error);
+        return NextResponse.json({ error: 'Failed to fetch citas data' }, { status: 500 });
     }
 }

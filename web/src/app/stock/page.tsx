@@ -13,21 +13,20 @@ interface Producto {
 
 const StockPage: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
-  const [salonId, setSalonId] = useState<number | null>(null);
+  const indice = parseInt(window.localStorage.getItem('indice') || '');
+  const salonId = indice;
 
   useEffect(() => {
     const fetchProductos = async () => {
-      if (salonId !== null) {
-        try {
-          const response = await fetch(`http://localhost:3000/api/get_pelus?id=${salonId}`);
-          if (!response.ok) {
-            throw new Error('Error al obtener los productos');
-          }
-          const data = await response.json();
-          setProductos(data.peluqueriaData); // Actualiza los productos con la respuesta JSON recibida
-        } catch (error) {
-          console.error('Error fetching productos:', error);
+      try {
+        const response = await fetch(`http://localhost:3000/api/get_producto?id=${salonId}`);
+        if (!response.ok) {
+          throw new Error('Error al obtener los productos');
         }
+        const data = await response.json();
+        setProductos(data.peluqueriaData); // Actualiza los productos con la respuesta JSON recibida
+      } catch (error) {
+        console.error('Error fetching productos:', error);
       }
     };
 
@@ -48,26 +47,11 @@ const StockPage: React.FC = () => {
     setProductos(nuevosProductos);
   };
 
-  const handleSalonIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSalonId(Number(e.target.value));
-  };
-
   return (
     <div>
       <NavBar />
       <div className={styles.pageContainer}>
         <h1>Stock de Productos</h1>
-
-        {/* Input para ingresar el ID del salón */}
-        <div className={styles.inputContainer}>
-          <label htmlFor="salonId">ID del Salón:</label>
-          <input 
-            type="number" 
-            id="salonId" 
-            value={salonId !== null ? salonId : ''} 
-            onChange={handleSalonIdChange} 
-          />
-        </div>
 
         {/* Tabla de productos */}
         <table className={styles.productosTable}>

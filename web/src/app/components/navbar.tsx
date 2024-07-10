@@ -13,8 +13,8 @@ const NavBar: React.FC = () => {
       <Link href="/stock" passHref>
         <span className={styles.navItem}>Stock</span>
       </Link>
-      <Link href="/estadisticas" passHref>
-        <span className={styles.navItem}>Estadísticas</span>
+      <Link href="/new_empleado" passHref>
+        <span className={styles.navItem}>Agregar Empleado</span>
       </Link>
     </nav>
   );

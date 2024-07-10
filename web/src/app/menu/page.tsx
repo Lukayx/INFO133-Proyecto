@@ -1,30 +1,71 @@
 "use client";
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Corregido: cambia de 'next/navigation' a 'next/router'
+
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import NavBar from '../components/navbar';
 import styles from './menu.module.css';
 import { format } from 'date-fns';
 
+interface Cliente {
+  rut: string;
+  hora: string;
+  tipoCorte: string;
+  peluquero: string;
+}
+
 const Menu: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [clientes, setClientes] = useState([
-    { nombre: 'Juan Pérez', hora: '12:56 del día 06-07', tipoCorte: 'Corte de Cabello', peluquero: 'Juan' },
-    { nombre: 'María García', hora: '14:56 del día 06-07', tipoCorte: 'Corte y Peinado', peluquero: 'María' },
+  const [clientes, setClientes] = useState<Cliente[]>([
+    { rut: '123456789', hora: '12:56 del día 06-07', tipoCorte: 'Corte de Cabello', peluquero: 'Juan' },
+    { rut: '987654321', hora: '14:56 del día 06-07', tipoCorte: 'Corte y Peinado', peluquero: 'María' },
   ]);
-  const [formData, setFormData] = useState({ nombre: '', tipoCorte: '' });
+  const [formData, setFormData] = useState({ rut: '', tipoCorte: '' });
   const [selectedStylist, setSelectedStylist] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
-  const indice = parseInt(process.env.NEXT_PUBLIC_INDICE || '0'); // Asegúrate de manejar el caso en que no haya ningún valor definido
-  console.log('Índice de esta wea es estoy en menu:', indice);
+  const [peluqueros, setPeluqueros] = useState<{ id: number; nombre: string }[]>([]);
+  const [clienteId, setClienteId] = useState<number | null>(null);
 
   const router = useRouter();
-  
+  const salonId = parseInt(localStorage.getItem('indice') || '0', 10); // Ajusta el valor predeterminado según tu lógica
+
+  useEffect(() => {
+    const fetchPeluqueros = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/get_empleado?salonId=${salonId}`);
+        const data = await response.json();
+        setPeluqueros(data.empleados || []);
+      } catch (error) {
+        console.error('Error fetching peluqueros:', error);
+      }
+    };
+
+    fetchPeluqueros();
+  }, [salonId]);
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));
+
+    if (name === 'rut') {
+      fetchClienteId(value);
+    }
+  };
+
+  const fetchClienteId = async (rut: string) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/get_cliente?rut=${rut}`);
+      const data = await response.json();
+      if (data.clienteId) {
+        setClienteId(data.clienteId);
+      } else {
+        setClienteId(null);
+      }
+    } catch (error) {
+      console.error('Error fetching cliente ID:', error);
+      setClienteId(null);
+    }
   };
 
   const handleStylistChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -39,26 +80,23 @@ const Menu: React.FC = () => {
 
     const hora = format(selectedDate, ' HH:mm \'del día\' dd-MM');
 
-    const newCliente = {
-      nombre: formData.nombre,
+    const newCliente: Cliente = {
+      rut: formData.rut,
       hora: hora,
       tipoCorte: formData.tipoCorte,
       peluquero: selectedStylist
-    }; 
+    };
 
     setClientes(prevClientes => [...prevClientes, newCliente]);
     setShowForm(false);
-    setFormData({ nombre: '', tipoCorte: '' });
+    setFormData({ rut: '', tipoCorte: '' });
     setSelectedStylist('');
     setSelectedDate(null);
-  };
-
-  const handleSelectNow = () => {
-    setSelectedDate(new Date());
+    setClienteId(null);
   };
 
   const navigateToLogin = () => {
-    router.push('/'); // Navegar a la página de inicio de sesión
+    router.push('/');
   };
 
   const tipoCorteOptions = [
@@ -83,11 +121,14 @@ const Menu: React.FC = () => {
           <div className={styles.form}>
             <input
               type="text"
-              name="nombre"
-              value={formData.nombre}
+              name="rut"
+              value={formData.rut}
               onChange={handleFormChange}
-              placeholder="Nombre del Cliente"
+              placeholder="RUT del Cliente"
             />
+            {clienteId !== null && (
+              <p>ID del Cliente: {clienteId}</p>
+            )}
             <label htmlFor="tipoCorte">Tipo de Corte:</label>
             <select
               id="tipoCorte"
@@ -109,9 +150,9 @@ const Menu: React.FC = () => {
               onChange={handleStylistChange}
             >
               <option value="">Selecciona un peluquero...</option>
-              <option value="Juan">Juan</option>
-              <option value="María">María</option>
-              {/* Agrega más opciones según los peluqueros disponibles */}
+              {peluqueros.map((peluquero) => (
+                <option key={peluquero.id} value={peluquero.nombre}>{peluquero.nombre}</option>
+              ))}
             </select>
 
             <label htmlFor="time">Hora:</label>
@@ -123,7 +164,7 @@ const Menu: React.FC = () => {
                 minDate={new Date()}
                 dateFormat="Pp"
               />
-              <button className={styles.nowButton} onClick={handleSelectNow}>Ahora</button>
+              <button className={styles.nowButton} onClick={() => setSelectedDate(new Date())}>Ahora</button>
             </div>
 
             <button onClick={handleAddCliente}>Agregar Cliente</button>
@@ -133,7 +174,7 @@ const Menu: React.FC = () => {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Nombre del Cliente</th>
+              <th>RUT del Cliente</th>
               <th>Hora</th>
               <th>Tipo de Corte</th>
               <th>Peluquero</th>
@@ -142,7 +183,7 @@ const Menu: React.FC = () => {
           <tbody>
             {clientes.map((cliente, index) => (
               <tr key={index}>
-                <td>{cliente.nombre}</td>
+                <td>{cliente.rut}</td>
                 <td>{cliente.hora}</td>
                 <td>{cliente.tipoCorte}</td>
                 <td>{cliente.peluquero}</td>
