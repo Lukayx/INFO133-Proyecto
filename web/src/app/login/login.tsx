@@ -2,7 +2,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
-
 interface Peluqueria {
   id: number;
   rut_empresa: string; // Asumo que el RUT de la empresa es un string según los datos de ejemplo
@@ -60,14 +59,11 @@ export default function Login() {
 
       if (ruts.indexOf(parseInt(rut)) != -1 ) {
         console.log('Peluquería encontrada:',);
-        const indice = ruts.indexOf(parseInt(rut)) //este indice voy a importar para el siguiente que será el menu
-        process.env.NEXT_PUBLIC_INDICE = indice.toString();
-        //const v = parseInt(process.env.NEXT_PUBLIC_INDICE || '0'); // Asegúrate de manejar el caso en que no haya ningún valor definido
-        //console.log('Índice recuperado:', v);
+        let index = ruts.indexOf(parseInt(rut)) //este indice voy a importar para el siguiente que será el menu
 
         
         // Aquí puedes almacenar el id de la peluquería para usar en las siguientes páginas, por ejemplo, en el estado global o en un contexto
-        router.push(`/menu?indice=${indice}`);
+        router.push(`/menu?indice=${index}`);
       } else {
         alert('Peluquería no encontrada');
         console.log(ruts)

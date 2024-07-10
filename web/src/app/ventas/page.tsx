@@ -27,6 +27,9 @@ const VentasPage: React.FC = () => {
     { id: 4, fecha: '2024-07-05', hora: '14:00', tipoCorte: 'Corte y Tinte', precio: '$40' },
   ];
 
+  let p = 2
+  const query = "ca${p}"
+  console.log(query)
   // Función para filtrar cortes de pelo por rango de fechas
   const filtrarPorFechas = () => {
     if (!fechaInicial || !fechaFinal) return cortesDePelo;
@@ -35,7 +38,7 @@ const VentasPage: React.FC = () => {
       return corteDate >= fechaInicial && corteDate <= fechaFinal;
     });
   };
-
+  const indice = parseInt(process.env.NEXT_PUBLIC_INDICE || '0'); // Asegúrate de manejar el caso en que no haya ningún valor definido
   return (
     <div>
       <NavBar />

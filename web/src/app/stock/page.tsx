@@ -1,39 +1,46 @@
 // src/pages/stock.tsx
-"use client"; //es increible pero esta weaita de acá me deja usar el usestate xd?
-// src/pages/stock.tsx
-
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 import NavBar from '../components/navbar';
-import styles from './stock.module.css'; // Importa los estilos CSS
+import styles from './stock.module.css';
 
 interface Producto {
   id: number;
   nombre: string;
-  cantidad: number;
-  precioCompra: number;
+  cantidad_stock: number;
+  precio_compra: number;
 }
 
 const StockPage: React.FC = () => {
-  // Ejemplo de lista de productos (simulación de datos)
-  const [productos, setProductos] = useState<Producto[]>([
-    { id: 1, nombre: 'Producto A', cantidad: 10, precioCompra: 15 },
-    { id: 2, nombre: 'Producto B', cantidad: 5, precioCompra: 20 },
-    { id: 3, nombre: 'Producto C', cantidad: 8, precioCompra: 12 },
-    { id: 4, nombre: 'Producto D', cantidad: 15, precioCompra: 18 },
-  ]);
+  const [productos, setProductos] = useState<Producto[]>([]);
 
-  // Función para añadir más existencias a un producto
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/get_producto');
+        if (!response.ok) {
+          throw new Error('Error al obtener los productos');
+        }
+        const data = await response.json();
+        setProductos(data.comunaData); // Actualiza los productos con la respuesta JSON recibida
+      } catch (error) {
+        console.error('Error fetching productos:', error);
+      }
+    };
+
+    fetchProductos();
+  }, []);
+
   const handleAñadirExistencias = (id: number) => {
     const nuevosProductos = productos.map(producto =>
-      producto.id === id ? { ...producto, cantidad: producto.cantidad + 1 } : producto
+      producto.id === id ? { ...producto, cantidad_stock: producto.cantidad_stock + 1 } : producto
     );
     setProductos(nuevosProductos);
   };
 
-  // Función para quitar existencias de un producto
   const handleQuitarExistencias = (id: number) => {
     const nuevosProductos = productos.map(producto =>
-      producto.id === id ? { ...producto, cantidad: producto.cantidad - 1 } : producto
+      producto.id === id ? { ...producto, cantidad_stock: producto.cantidad_stock - 1 } : producto
     );
     setProductos(nuevosProductos);
   };
@@ -49,7 +56,7 @@ const StockPage: React.FC = () => {
           <thead>
             <tr>
               <th>Nombre</th>
-              <th>Cantidad</th>
+              <th>Cantidad en Stock</th>
               <th>Precio de Compra</th>
               <th>Acciones</th>
             </tr>
@@ -58,8 +65,8 @@ const StockPage: React.FC = () => {
             {productos.map(producto => (
               <tr key={producto.id}>
                 <td>{producto.nombre}</td>
-                <td>{producto.cantidad}</td>
-                <td>${producto.precioCompra}</td>
+                <td>{producto.cantidad_stock}</td>
+                <td>${producto.precio_compra}</td>
                 <td>
                   <button onClick={() => handleAñadirExistencias(producto.id)}>+</button>
                   <button onClick={() => handleQuitarExistencias(producto.id)}>-</button>

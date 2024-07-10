@@ -23,7 +23,7 @@ export default function Register() {
     // Función para obtener las comunas desde la API
     const fetchComunas = async () => {
       try {
-        const response = await fetch('/api/comuna');
+        const response = await fetch('/api/get_comuna');
         const data = await response.json();
         setComunas(data.comunaData);
       } catch (error) {
@@ -68,7 +68,7 @@ export default function Register() {
       console.log('Registro exitoso:', data);
 
       // Navegar a la página de menú después de registrarse
-      router.push('/menu');
+      router.push('/');
     } catch (error) {
       console.error('Error registrando la peluquería:', error);
       // Puedes mostrar un mensaje de error al usuario si lo deseas
